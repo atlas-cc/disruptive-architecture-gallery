@@ -127,7 +127,7 @@
 
   <h1>AWS SSM, the <em>operator</em> path.</h1>
 
-  <p class="lede">The real Kaeden / ZERO path into Miguel's AWS. Use the existing <strong>ZERO_DeployFish</strong> IAM access keys to assume role into Miguel's account, then use SSM. This is the safe default. Not direct SSH.</p>
+  <p class="lede">The operator path into the Disruptive AWS account. Assume the cross-account access role, then use SSM Session Manager. This is the safe default. Not direct SSH.</p>
 
   <section>
     <div class="label"><span class="dot">●</span> BASE IDENTITY</div>
@@ -135,14 +135,14 @@
     <div class="grid-2">
       <div class="card">
         <ul>
-          <li><strong>Source IAM identity:</strong> <code>ZERO_DeployFish</code></li>
+          <li><strong>Source IAM identity:</strong> <code>operator credentials in management account</code></li>
           <li><strong>Source account:</strong> <code>237795118184</code></li>
           <li><strong>Target account:</strong> <code>225726002432</code></li>
           <li><strong>Target role:</strong> <code>OrganizationAccountAccessRole</code></li>
           <li><strong>Region:</strong> <code>us-east-1</code></li>
         </ul>
         <div style="margin-top:16px;">
-          <span class="chip">ZERO_DeployFish</span>
+          <span class="chip">Operator IAM</span>
           <span class="chip">us-east-1</span>
           <span class="chip">OrgAccountAccess</span>
         </div>
@@ -161,7 +161,7 @@
     </div>
     <div class="callout">
       <div class="label"><span class="dot">●</span> CAUTION</div>
-      <p>This is a CLI assume-role workflow using existing IAM access keys, not a console login on the ZERO_DeployFish user page.</p>
+      <p>This is a CLI assume-role workflow using existing IAM access keys, not a console login.</p>
     </div>
   </section>
 
@@ -172,7 +172,7 @@
     <div class="cmd-label"><span class="dot">●</span> COMMAND · ASSUME ROLE</div>
 <pre>aws sts assume-role \
   --role-arn arn:aws:iam::225726002432:role/OrganizationAccountAccessRole \
-  --role-session-name zero-audit \
+  --role-session-name operator-audit \
   --region us-east-1</pre>
 
     <div class="cmd-label"><span class="dot">●</span> COMMAND · EXPORT TEMP CREDENTIALS</div>
@@ -228,7 +228,7 @@ aws ssm start-session --target i-002d7492322ae7f18 --region us-east-1</pre>
   </section>
 
   <div class="footer">
-    <span><span class="dot">●</span> ZERO OPERATOR PATH</span>
+    <span><span class="dot">●</span> OPERATOR PATH</span>
     <span>MADE BY KAEDEN</span>
   </div>
 

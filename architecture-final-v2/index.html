@@ -80,11 +80,11 @@ hr{border:0;border-top:1px solid var(--line);margin:64px 0}
   <div class="brandmark"><span class="dot"></span> DISRUPTIVE · ATLAS OS ARCHITECTURE BRIEF · V2</div>
 
   <h1>Atlas OS, an operator-led <em>architecture</em>.</h1>
-  <p class="lede">A multi-brand intelligence fleet. Nine EC2 boxes. Seven brand bots. One semantic memory mesh. Every artifact, decision, and process the team ships, written down once and recalled by the bots that touch it.</p>
+  <p class="lede">A multi-brand intelligence fleet. Eight EC2 boxes. Seven brand bots. One semantic memory mesh. Every artifact, decision, and process the team ships, written down once and recalled by the bots that touch it.</p>
   <p class="lede">This is a current-state brief. As of April 28, 2026, post Hermes migration. Intended for Miguel, the operating team, and any contractor onboarding into the stack.</p>
 
   <div class="stat-grid">
-    <div class="stat"><span class="num">9</span><span class="lab"><span class="dot"></span> EC2 boxes</span></div>
+    <div class="stat"><span class="num">8</span><span class="lab"><span class="dot"></span> EC2 boxes</span></div>
     <div class="stat"><span class="num">7</span><span class="lab"><span class="dot"></span> Brand bots</span></div>
     <div class="stat"><span class="num">6</span><span class="lab"><span class="dot"></span> Memory schemas</span></div>
     <div class="stat"><span class="num">10</span><span class="lab"><span class="dot"></span> Active crons</span></div>
@@ -135,7 +135,7 @@ cbum x2, nora     athletic, gustavo
 
   <h2 id="fleet">The <em>fleet</em>.</h2>
   <p class="kicker"><span class="dot"></span> 02 / FLEET</p>
-  <p>Nine EC2 boxes. Each box is single-purpose. Brand isolation is enforced at the box level, not at the process level.</p>
+  <p>Eight EC2 boxes. Each box is single-purpose. Brand isolation is enforced at the box level, not at the process level.</p>
 
   <table>
     <thead><tr><th>Box</th><th>Instance</th><th>Role</th><th>Bots</th></tr></thead>
@@ -148,7 +148,6 @@ cbum x2, nora     athletic, gustavo
       <tr><td><strong>CBum</strong><div class="role">i-0d4b06294c7def006</div></td><td class="mono">100.54.136.12</td><td>CBum brand server.</td><td>cbum-personal, cbum-standard</td></tr>
       <tr><td><strong>Miguel EA</strong><div class="role">i-05b10dbe903fbad85</div></td><td class="mono">35.171.208.239</td><td>Miguel executive assistant box.</td><td>Nora</td></tr>
       <tr><td><strong>Gustavo Dev</strong><div class="role">i-097be4b2834be57bf</div></td><td class="mono">54.165.104.196</td><td>Contractor dev environment.</td><td>none</td></tr>
-      <tr><td><strong>Zen Control</strong><div class="role">i-01d1a4777613afda1</div></td><td class="mono">98.85.253.16</td><td>Operator control plane. Kaeden side.</td><td>Zen</td></tr>
     </tbody>
   </table>
 
@@ -225,7 +224,7 @@ cbum x2, nora     athletic, gustavo
   <h2 id="runtime">The runtime <em>stack</em>.</h2>
   <p class="kicker"><span class="dot"></span> 05 / RUNTIME</p>
 
-  <h3>Hermes Agent v0.11 (Atlas, Arlo, Zen)</h3>
+  <h3>Hermes Agent v0.11 (Atlas, Arlo)</h3>
   <p>Modern runtime. One systemd unit per bot. Shared venv. Per-bot HERMES_HOME directory holds SOUL, MEMORY, skills, workspace. Skills load on demand. Tool use is structured and logged.</p>
   <pre><code>/home/ubuntu/.hermes/hermes-agent/    # shared install
 /home/ubuntu/.hermes-disruptive/      # Atlas SOUL + memory
@@ -250,7 +249,6 @@ systemctl status hermes-arlo</code></pre>
     <li>Disruptive Brands AWS account: <code>225726002432</code>. Region <code>us-east-1</code>.</li>
     <li>Atlas runs with EC2 instance role <code>DisruptiveAIBotRole</code>. Native role on the box, not assumed.</li>
     <li>Brand boxes carry brand-scoped roles. Read-only for Atlas where possible, write where needed.</li>
-    <li>Zen Control reaches the Disruptive fleet via cross-account assume role from a separate management account.</li>
   </ul>
 
   <h3>Secrets</h3>
@@ -325,11 +323,6 @@ systemctl status hermes-arlo</code></pre>
   <div class="callout">
     <div class="lab"><span class="dot"></span> ATLAS HOLDS PRIVILEGED ACCESS</div>
     <p>Atlas can SSM into every Disruptive box. Treat the Atlas SOUL and identity files as a control surface. Changes to its allowlist, scope, or skills should go through the same review as a production deploy.</p>
-  </div>
-
-  <div class="callout">
-    <div class="lab"><span class="dot"></span> ZEN IS NOT A DISRUPTIVE BOT</div>
-    <p>Zen lives on a separate management account. It is Kaeden's operator, scoped to operate Disruptive infrastructure on his behalf. It is not bound to a brand. Do not put Zen in brand allowlists.</p>
   </div>
 
   <hr>
