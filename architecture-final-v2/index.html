@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas OS, an operator-led architecture. Disruptive.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F1E8;--bg-alt:#EDE6D3;--ink:#0E1A14;--muted:#5A6B5F;
+  --pine:#2F6B4A;--pine-light:#4A8F6C;--pine-deep:#1F3024;--pine-darkest:#0F1F18;
+  --true-gold:#B8893A;--true-gold-light:#D9B26A;--rust:#B85C3A;
+  --line:rgba(14,26,20,.10);--line-soft:rgba(14,26,20,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;font-size:16px;line-height:1.55;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:64px 32px 96px}
+.brandmark{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted);margin-bottom:48px}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--pine);vertical-align:middle;margin-top:-1px}
+.dot--sage{background:var(--muted)}
+.dot--gold{background:var(--true-gold)}
+.dot--rust{background:var(--rust)}
+.dot--ink{background:var(--ink)}
+h1{font-family:Fraunces,serif;font-weight:500;font-size:64px;line-height:1.05;letter-spacing:-1.6px;margin:0 0 20px}
+h1 em{font-style:italic;color:var(--pine)}
+h2{font-family:Fraunces,serif;font-weight:500;font-size:36px;line-height:1.15;letter-spacing:-.6px;margin:64px 0 16px}
+h2 em{font-style:italic;color:var(--pine)}
+h3{font-family:Fraunces,serif;font-weight:500;font-size:22px;line-height:1.25;margin:32px 0 12px}
+.lede{font-size:18px;color:var(--muted);max-width:680px;margin:0 0 16px;line-height:1.55}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted);margin:0 0 12px;display:flex;align-items:center;gap:8px}
+p{margin:0 0 16px;color:var(--ink)}
+ul{margin:0 0 20px;padding:0;list-style:none}
+li{position:relative;padding-left:18px;margin-bottom:8px;color:var(--ink)}
+li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:var(--ink)}
+.card{background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;padding:28px;margin:20px 0}
+.card_head{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line-soft)}
+.card_row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line-soft);gap:16px}
+.card_row:last-child{border-bottom:0}
+.card_row .label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+.card_row .val{font-family:Fraunces,serif;font-style:italic;color:var(--pine);font-size:18px;text-align:right}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(47,107,74,.45);color:var(--pine);border-radius:999px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;margin-right:6px;margin-bottom:6px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:32px 0}
+@media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;padding:22px}
+.stat .num{font-family:Fraunces,serif;font-style:italic;color:var(--pine);font-size:44px;line-height:1;letter-spacing:-1px;display:block;margin-bottom:8px}
+.stat .lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.32px;text-transform:uppercase;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:16px 0 24px}
+th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.32px;text-transform:uppercase;color:var(--muted);font-weight:500;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid var(--line-soft);font-size:14px;color:var(--ink);vertical-align:top}
+td.mono{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink)}
+td .role{color:var(--muted);font-size:13px}
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--bg-alt);padding:2px 6px;border-radius:4px;color:var(--ink)}
+pre{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--pine-darkest);color:var(--bg-alt);padding:18px;border-radius:8px;border:1px solid var(--pine);overflow-x:auto;margin:16px 0;line-height:1.6}
+pre code{background:transparent;padding:0;color:inherit;font-size:13px}
+.callout{border:1px solid var(--rust);background:var(--bg-alt);border-radius:10px;padding:20px;margin:20px 0}
+.callout .lab{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--rust);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.callout .lab .dot{background:var(--rust)}
+.gold{border:1px solid var(--true-gold);background:var(--pine-darkest);color:var(--true-gold-light);border-radius:10px;padding:24px;margin:32px 0}
+.gold .lab{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--true-gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.gold .lab .dot{background:var(--true-gold)}
+.gold p{color:var(--true-gold-light);margin:0}
+.gold em{color:#fff;font-style:italic;font-family:Fraunces,serif}
+hr{border:0;border-top:1px solid var(--line);margin:64px 0}
+.footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.32px;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 24px;margin:32px 0 8px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.toc a{color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:1px solid var(--line-soft);display:flex;justify-content:space-between}
+.toc a:hover{color:var(--pine)}
+.toc .num{color:var(--muted)}
+@media(max-width:760px){.toc{grid-template-columns:1fr}}
+.diagram{background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;padding:32px;margin:32px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);overflow-x:auto;line-height:1.7}
+.diagram .node{color:var(--pine);font-weight:500}
+.diagram .conn{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brandmark"><span class="dot"></span> DISRUPTIVE · ATLAS OS ARCHITECTURE BRIEF · V2</div>
+
+  <h1>Atlas OS, an operator-led <em>architecture</em>.</h1>
+  <p class="lede">A multi-brand intelligence fleet. Nine EC2 boxes. Seven brand bots. One semantic memory mesh. Every artifact, decision, and process the team ships, written down once and recalled by the bots that touch it.</p>
+  <p class="lede">This is a current-state brief. As of April 28, 2026, post Hermes migration. Intended for Miguel, the operating team, and any contractor onboarding into the stack.</p>
+
+  <div class="stat-grid">
+    <div class="stat"><span class="num">9</span><span class="lab"><span class="dot"></span> EC2 boxes</span></div>
+    <div class="stat"><span class="num">7</span><span class="lab"><span class="dot"></span> Brand bots</span></div>
+    <div class="stat"><span class="num">6</span><span class="lab"><span class="dot"></span> Memory schemas</span></div>
+    <div class="stat"><span class="num">10</span><span class="lab"><span class="dot"></span> Active crons</span></div>
+  </div>
+
+  <div class="kicker"><span class="dot"></span> ON THIS PAGE</div>
+  <div class="toc">
+    <a href="#shape"><span>The shape</span><span class="num">01</span></a>
+    <a href="#fleet"><span>The fleet</span><span class="num">02</span></a>
+    <a href="#bots"><span>The bots</span><span class="num">03</span></a>
+    <a href="#memory"><span>Memory mesh</span><span class="num">04</span></a>
+    <a href="#runtime"><span>Runtime stack</span><span class="num">05</span></a>
+    <a href="#access"><span>Access and identity</span><span class="num">06</span></a>
+    <a href="#data"><span>Data flows</span><span class="num">07</span></a>
+    <a href="#exceptions"><span>Architectural exceptions</span><span class="num">08</span></a>
+    <a href="#roadmap"><span>30, 60, 90 day roadmap</span><span class="num">09</span></a>
+    <a href="#open"><span>Open questions</span><span class="num">10</span></a>
+  </div>
+
+  <hr>
+
+  <h2 id="shape">The <em>shape</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 01 / SHAPE</p>
+  <p>Atlas OS is not a single product. It is a coordinated set of brand-scoped operators, each bound to a brand, all sharing one semantic memory mesh and one operator identity layer. The pattern is intentional. One brand cannot leak into another. One operator cannot lose context across sessions.</p>
+  <p>Three layers, top to bottom:</p>
+  <ul>
+    <li><strong>Identity layer.</strong> Each bot carries SOUL, IDENTITY, USER, and MEMORY files that define voice, scope, allowlist, and brand-specific facts. These are the prompts the runtime injects on every turn.</li>
+    <li><strong>Runtime layer.</strong> Hermes Agent v0.11 on most boxes. OpenClaw still active on five brand boxes pending migration. Tommy uses a custom FastAPI bridge.</li>
+    <li><strong>Memory layer.</strong> Postgres 16 with pgvector on Atlas. Six schemas, one per agent class. 768 dimension embeddings. Cross-schema reads gated by Postgres roles.</li>
+  </ul>
+
+  <div class="diagram">
+<span class="node">[Telegram]</span>  <span class="conn">&lt;----&gt;</span>  <span class="node">[Atlas EC2]</span>  <span class="conn">----&gt;</span>  <span class="node">[pgvector mesh]</span>
+   |                |  hermes-disruptive          |
+   |                |  hermes-arlo                |  atlas_memory
+   |                |                             |  charles_memory
+   v                v                             |  disruptive_memory
+<span class="node">[Brand bots]</span>     <span class="node">[8 brand boxes]</span>                <span class="node">|  hive_mind</span>
+charles, otto,    raw, revive, 3d,                |  tommy_memory
+revive, 3d,       cbum, nora, raw-                |  gustavo_memory
+cbum x2, nora     athletic, gustavo
+   |
+   v
+<span class="node">[Brand workspaces]</span>
+  </div>
+
+  <hr>
+
+  <h2 id="fleet">The <em>fleet</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 02 / FLEET</p>
+  <p>Nine EC2 boxes. Each box is single-purpose. Brand isolation is enforced at the box level, not at the process level.</p>
+
+  <table>
+    <thead><tr><th>Box</th><th>Instance</th><th>Role</th><th>Bots</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Atlas HQ</strong><div class="role">i-002d7492322ae7f18</div></td><td class="mono">3.215.63.251</td><td>HQ + pgvector mesh host. Operator brain.</td><td>Disruptive, Arlo</td></tr>
+      <tr><td><strong>RAW Nutrition</strong><div class="role">i-0e47d8d79920afe66</div></td><td class="mono">98.81.114.254</td><td>RAW Nutrition brand server.</td><td>Charles, Otto</td></tr>
+      <tr><td><strong>RAW Athletic Club</strong><div class="role">i-086c2ab1b05cf40ff</div></td><td class="mono">34.235.207.137</td><td>Tommy bot + RAW dashboard backend.</td><td>Tommy</td></tr>
+      <tr><td><strong>Revive MD</strong><div class="role">i-0c73d4ae81a36dc1b</div></td><td class="mono">18.206.150.137</td><td>Revive brand server.</td><td>Revive</td></tr>
+      <tr><td><strong>3D Energy</strong><div class="role">i-0b5987d00d4cde265</div></td><td class="mono">44.200.120.238</td><td>3D Energy brand server.</td><td>3denergy</td></tr>
+      <tr><td><strong>CBum</strong><div class="role">i-0d4b06294c7def006</div></td><td class="mono">100.54.136.12</td><td>CBum brand server.</td><td>cbum-personal, cbum-standard</td></tr>
+      <tr><td><strong>Miguel EA</strong><div class="role">i-05b10dbe903fbad85</div></td><td class="mono">35.171.208.239</td><td>Miguel executive assistant box.</td><td>Nora</td></tr>
+      <tr><td><strong>Gustavo Dev</strong><div class="role">i-097be4b2834be57bf</div></td><td class="mono">54.165.104.196</td><td>Contractor dev environment.</td><td>none</td></tr>
+      <tr><td><strong>Zen Control</strong><div class="role">i-01d1a4777613afda1</div></td><td class="mono">98.85.253.16</td><td>Operator control plane. Kaeden side.</td><td>Zen</td></tr>
+    </tbody>
+  </table>
+
+  <p>Atlas runs as a privileged operator. It can SSM into every brand box via <code>DisruptiveAIBotRole</code>. Brand boxes cannot reach each other. They reach Atlas only through Postgres on private subnet.</p>
+
+  <hr>
+
+  <h2 id="bots">The <em>bots</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 03 / BOTS</p>
+  <p>Each bot is a Telegram identity bound to a single SOUL and a single brand. The same code runs them all. Different SOULs, different memory, different voice.</p>
+
+  <div class="card">
+    <div class="card_head"><span><span class="dot"></span> ATLAS · @DisruptiveMaster_Bot</span><span>HERMES</span></div>
+    <p>The portfolio operator. Strategic brain across all Disruptive Brands. AWS access across the fleet. Owns daily DTC pacing, inventory alerts, revenue anomalies, weekly reports.</p>
+    <div>
+      <span class="chip"><span class="dot"></span> ATLAS HQ</span>
+      <span class="chip"><span class="dot"></span> AWS SSM</span>
+      <span class="chip"><span class="dot"></span> 33 SKILLS</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card_head"><span><span class="dot"></span> ARLO · @Arlo_AtlasOS_Bot</span><span>HERMES</span></div>
+    <p>Revive MD content and design operator. Writes briefs, holds brand systems, runs content sprints. No terminal, no SSM, no infrastructure mutations. Citation discipline enforced.</p>
+    <div>
+      <span class="chip"><span class="dot"></span> REVIVE MD</span>
+      <span class="chip"><span class="dot"></span> CONTENT ONLY</span>
+      <span class="chip"><span class="dot"></span> 20 SKILLS</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card_head"><span><span class="dot"></span> TOMMY · @TommyByRAW_Bot</span><span>FASTAPI BRIDGE</span></div>
+    <p>RAW Athletic Club gym bot. Custom architecture. Lives behind the RAW FastAPI backend, not in a polling loop. Member intake, opener and follow-up flows, dashboard tied to staff actions.</p>
+    <div>
+      <span class="chip"><span class="dot"></span> RAW ATHLETIC</span>
+      <span class="chip"><span class="dot"></span> WEBHOOK</span>
+      <span class="chip"><span class="dot"></span> ARCHITECTURAL EXCEPTION</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card_head"><span><span class="dot"></span> CHARLES, OTTO, REVIVE, 3D, CBUM x2, NORA</span><span>OPENCLAW</span></div>
+    <p>Brand-bound operators. One per brand box. Still on OpenClaw runtime. Migration to Hermes pending, scheduled across the next 30 days using the migration playbook proven on Atlas and Arlo.</p>
+    <div>
+      <span class="chip"><span class="dot"></span> 6 BOTS</span>
+      <span class="chip"><span class="dot"></span> OPENCLAW</span>
+      <span class="chip"><span class="dot"></span> MIGRATION QUEUED</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2 id="memory">The memory <em>mesh</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 04 / MEMORY</p>
+  <p>One Postgres 16 instance on Atlas, port 5432, localhost-bound. pgvector extension. Six schemas. Every bot writes its own. Cross-bot reads gated by Postgres role grants.</p>
+
+  <table>
+    <thead><tr><th>Schema</th><th>Owner</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">atlas_memory</td><td>atlas_admin</td><td>Atlas operator working memory and embeddings.</td></tr>
+      <tr><td class="mono">disruptive_memory</td><td>disruptive_mem_role</td><td>Hermes Disruptive bot durable memory.</td></tr>
+      <tr><td class="mono">charles_memory</td><td>charles_role</td><td>RAW Nutrition Charles memory.</td></tr>
+      <tr><td class="mono">tommy_memory</td><td>tommy_role</td><td>Tommy gym bot session and member context.</td></tr>
+      <tr><td class="mono">gustavo_memory</td><td>gustavo_role</td><td>Contractor agent memory, scoped to RAW only.</td></tr>
+      <tr><td class="mono">hive_mind</td><td>hive_mind_role</td><td>Cross-bot semantic search surface. Read-only for most agents.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Embedding model is OpenAI <code>text-embedding-3-small</code>, 768 dimensions. Same model across the mesh, intentionally. Lets any bot query any indexed schema and get useful similarity scores.</p>
+
+  <hr>
+
+  <h2 id="runtime">The runtime <em>stack</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 05 / RUNTIME</p>
+
+  <h3>Hermes Agent v0.11 (Atlas, Arlo, Zen)</h3>
+  <p>Modern runtime. One systemd unit per bot. Shared venv. Per-bot HERMES_HOME directory holds SOUL, MEMORY, skills, workspace. Skills load on demand. Tool use is structured and logged.</p>
+  <pre><code>/home/ubuntu/.hermes/hermes-agent/    # shared install
+/home/ubuntu/.hermes-disruptive/      # Atlas SOUL + memory
+/home/ubuntu/.hermes-arlo/            # Arlo SOUL + memory
+
+systemctl status hermes-disruptive
+systemctl status hermes-arlo</code></pre>
+
+  <h3>OpenClaw (Charles, Otto, Revive, 3D, CBum, Nora)</h3>
+  <p>Legacy runtime. Telegram polling loop, agent dispatch, memory in flat files plus pgvector. Stable, but skill ecosystem and tool framework lag Hermes. Migration is ordered, not urgent.</p>
+
+  <h3>Hermes voice and scope discipline</h3>
+  <p>Both Hermes bots run with hard rules baked into SOUL. No em dashes. Brand isolation. No cross-injection of secrets. Pre-flight gate before infrastructure mutations. Make-by-Kaeden attribution on all artifacts.</p>
+
+  <hr>
+
+  <h2 id="access">Access and <em>identity</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 06 / ACCESS</p>
+
+  <h3>AWS</h3>
+  <ul>
+    <li>Disruptive Brands AWS account: <code>225726002432</code>. Region <code>us-east-1</code>.</li>
+    <li>Atlas runs with EC2 instance role <code>DisruptiveAIBotRole</code>. Native role on the box, not assumed.</li>
+    <li>Brand boxes carry brand-scoped roles. Read-only for Atlas where possible, write where needed.</li>
+    <li>Zen Control reaches the Disruptive fleet via cross-account assume role from a separate management account.</li>
+  </ul>
+
+  <h3>Secrets</h3>
+  <ul>
+    <li>AWS Secrets Manager is the single source of truth. JSON-wrapped values, accessed with <code>jq -r .value</code>.</li>
+    <li>Telegram tokens, Anthropic keys, Monday API token, RAW backend creds, all live in Secrets Manager.</li>
+    <li>Each bot pulls only its own secrets. No cross-brand secret access.</li>
+  </ul>
+
+  <h3>Telegram allowlists</h3>
+  <ul>
+    <li>Disruptive bot: Miguel, Dom, Matty, Kaeden. Group chats: explicit allowlist.</li>
+    <li>Arlo: Kaeden plus authorized Revive content team.</li>
+    <li>Brand bots: brand-team-only.</li>
+  </ul>
+
+  <h3>SSH and SSM</h3>
+  <ul>
+    <li>SSH is disabled or behind tight SG rules on production boxes.</li>
+    <li>SSM Session Manager is the operator path. <code>aws ssm start-session</code>.</li>
+    <li>From Atlas, helper script <code>atlas-ssm.py</code> wraps fleet-wide SSM with shortcuts (<code>atlas-ssm raw "uptime"</code>).</li>
+  </ul>
+
+  <hr>
+
+  <h2 id="data">Data <em>flows</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 07 / DATA</p>
+
+  <h3>Inbound</h3>
+  <ul>
+    <li><strong>Triple Whale</strong> for DTC ad spend, NC-ROAS, attribution. Pulled by Atlas crons.</li>
+    <li><strong>Shopify</strong> for orders, inventory, product status. Read-only.</li>
+    <li><strong>Amazon SP-API</strong> for TACOS and seller central data, one brand wired today, scaling next.</li>
+    <li><strong>Monday API</strong> for board state, project tasks, item status. Token in Secrets Manager.</li>
+    <li><strong>Fireflies</strong> for meeting transcripts.</li>
+  </ul>
+
+  <h3>Outbound</h3>
+  <ul>
+    <li>Telegram messages back to Miguel, the team, brand-specific groups.</li>
+    <li>Daily and weekly report PDFs pushed to Google Drive.</li>
+    <li>DTC pacer writes to a Google Sheet that Miguel and the team read every morning.</li>
+  </ul>
+
+  <h3>Crons (active on Atlas)</h3>
+  <table>
+    <thead><tr><th>Schedule</th><th>Job</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1 1 * * *</td><td>DTC daily spend pacer (1:01 AM ET, UTC-shifted to fix Triple Whale bug)</td></tr>
+      <tr><td class="mono">*/30 10-23 * * *</td><td>Inventory alerts, business hours ET</td></tr>
+      <tr><td class="mono">*/30 0-3 * * *</td><td>Inventory alerts, overnight ET</td></tr>
+      <tr><td class="mono">0 */2 * * *</td><td>Revenue anomaly check, every two hours</td></tr>
+      <tr><td class="mono">0 10 * * *</td><td>Amazon TACOS daily</td></tr>
+      <tr><td class="mono">0 13 * * 1</td><td>Weekly report, Monday 9 AM ET</td></tr>
+      <tr><td class="mono">0 11 * * *</td><td>Daily cost report, 7 AM ET</td></tr>
+      <tr><td class="mono">0 12 * * *</td><td>Atlas heartbeat AM, 8 AM ET morning check-in</td></tr>
+      <tr><td class="mono">0 22 * * *</td><td>Atlas heartbeat PM, 6 PM ET evening retro</td></tr>
+      <tr><td class="mono">0 10 * * *</td><td>Tommy opener-followup loop (RAW backend, separate)</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2 id="exceptions">Architectural <em>exceptions</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 08 / EXCEPTIONS</p>
+
+  <div class="callout">
+    <div class="lab"><span class="dot"></span> TOMMY IS NOT A NORMAL BOT</div>
+    <p>Tommy on RAW Athletic Club does not run an OpenClaw or Hermes Telegram polling loop. The RAW FastAPI backend owns Telegram webhook ingress. The backend calls <code>openclaw agent --local</code> through <code>tommy_bridge.py</code> for the LLM brain. Do not enable a polling loop on the Tommy host. Read <code>knowledge/playbooks/tommy-architecture.md</code> before touching anything on RAW Athletic.</p>
+  </div>
+
+  <div class="callout">
+    <div class="lab"><span class="dot"></span> ATLAS HOLDS PRIVILEGED ACCESS</div>
+    <p>Atlas can SSM into every Disruptive box. Treat the Atlas SOUL and identity files as a control surface. Changes to its allowlist, scope, or skills should go through the same review as a production deploy.</p>
+  </div>
+
+  <div class="callout">
+    <div class="lab"><span class="dot"></span> ZEN IS NOT A DISRUPTIVE BOT</div>
+    <p>Zen lives on a separate management account. It is Kaeden's operator, scoped to operate Disruptive infrastructure on his behalf. It is not bound to a brand. Do not put Zen in brand allowlists.</p>
+  </div>
+
+  <hr>
+
+  <h2 id="roadmap">30, 60, 90 day <em>roadmap</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 09 / ROADMAP</p>
+  <p>Tracked on the AI Board in Monday. Sequenced by impact and dependencies. Items below reflect open scope as of April 28.</p>
+
+  <h3>30 days. Foundations finish.</h3>
+  <ul>
+    <li>Migrate remaining six brand bots from OpenClaw to Hermes. Atlas + Arlo proved the playbook.</li>
+    <li>Org chart for the bot system. Built on top of the live registry, shared with Miguel and the team.</li>
+    <li>RAW Athletic gym dashboard optimization. Pass against Gustavo's PR queue.</li>
+    <li>Revive Supps Pump content sprint. Arlo-led, Kaley-coordinated.</li>
+    <li>Document access and instructions. Cheatsheet plus engagement one-pager already shipped, refresh post-Hermes.</li>
+  </ul>
+
+  <h3>60 days. Integrations layer.</h3>
+  <ul>
+    <li>Shopify integration for all stores. Centralized inventory and sales API across Revive, RAW, 3D, CBum, Nora.</li>
+    <li>Amazon integration for all stores. Scale the TACOS pattern across the portfolio.</li>
+    <li>Revive SEO and AEO program. Sustained content cadence with citation discipline.</li>
+    <li>Obsidian mind map. Curate the knowledge corpus for human navigation, not just bot retrieval.</li>
+  </ul>
+
+  <h3>90 days. Atlas OS as a product.</h3>
+  <ul>
+    <li>Disruptive Command Center. Unified ops UI on top of the existing infrastructure.</li>
+    <li>Atlas OS SaaS scope decision. Define the MVP, declare what is and is not in the box.</li>
+    <li>Productize the brand-box pattern. Spin up a new brand bot in a day, not a week.</li>
+  </ul>
+
+  <hr>
+
+  <h2 id="open">Open <em>questions</em>.</h2>
+  <p class="kicker"><span class="dot"></span> 10 / OPEN</p>
+  <ul>
+    <li>Atlas OS SaaS. Are we productizing this externally, or keeping it internal as a competitive moat? Decision unblocks Command Center scope and integration roadmap.</li>
+    <li>Cross-brand semantic search. Hive mind schema exists, retrieval surface does not. Worth building, but only after migration finishes.</li>
+    <li>Dashboard surface. Where does ops data live for the team day to day. Sheets work today. Command Center is the next leap.</li>
+    <li>Contractor onboarding velocity. Gustavo onboarded in days. Pattern is reusable, but needs codifying as a playbook.</li>
+  </ul>
+
+  <div class="gold">
+    <div class="lab"><span class="dot"></span> THE BET</div>
+    <p>Operator-led, AI-native, brand-isolated. Different from a single chatbot, different from a generic agent platform. The architecture is the <em>moat</em>. Every bot the team trusts is one fewer thing the team has to remember.</p>
+  </div>
+
+  <div class="footer">
+    <span><span class="dot"></span> ATLAS-OS / ARCHITECTURE-V2 / 2026-04-28</span>
+    <span>MADE BY KAEDEN</span>
+  </div>
+
+</div>
+</body>
+</html>
