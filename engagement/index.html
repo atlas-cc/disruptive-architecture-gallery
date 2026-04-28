@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Disruptive Engagement Overview</title>
+  <style>
+    :root {
+      --accent: #E63419;
+      --black: #191919;
+      --bg: #FFFFFF;
+      --card: #FFFFFF;
+      --border: #E6E0DA;
+      --text: #191919;
+      --muted: #5A5550;
+      --soft: #9A9590;
+      --soft-bg: #FAF7F4;
+      --radius: 22px;
+    }
+    @page { size: Letter; margin: 0.48in; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.52;
+    }
+    .page { max-width: 8.5in; margin: 0 auto; }
+    .hero {
+      background: var(--black);
+      color: white;
+      border-radius: 28px;
+      padding: 24px 24px 20px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--accent);
+    }
+    .eyebrow, .section-eyebrow, .mini-label {
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .eyebrow { color: rgba(255,255,255,0.58); font-size: 10px; margin-bottom: 6px; }
+    .section-eyebrow { color: var(--soft); font-size: 9px; margin-bottom: 7px; }
+    h1, h2 {
+      margin: 0;
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    h1 { font-size: 30px; line-height: 0.98; }
+    h2 { font-size: 21px; margin-bottom: 8px; }
+    .hero p { margin: 8px 0 0; color: rgba(255,255,255,0.8); max-width: 640px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 16px 14px;
+    }
+    .metric {
+      background: var(--soft-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 12px 10px;
+    }
+    .metric .mini-label { color: var(--soft); font-size: 8px; margin-bottom: 4px; }
+    .metric .num {
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      color: var(--accent);
+      font-size: 28px;
+      line-height: 1;
+    }
+    .metric .sub { color: var(--muted); font-size: 11px; margin-top: 4px; }
+    p { margin: 0 0 8px; color: var(--muted); }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    li { margin: 0 0 6px; }
+    .truth {
+      border-left: 4px solid var(--accent);
+      background: #FEF2EF;
+      border-radius: 14px;
+      padding: 12px 12px 10px;
+      margin-top: 10px;
+    }
+    .footer { text-align: center; color: var(--soft); font-size: 10px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="eyebrow">Engagement overview</div>
+      <h1>Disruptive Operating Scope</h1>
+      <p>This one-pager outlines the current operating arrangement for ongoing support across the Disruptive stack, including the work completed to date, ongoing weekly involvement, and scope of support moving forward.</p>
+    </section>
+
+    <section class="row-3">
+      <div class="metric">
+        <div class="mini-label">Monthly retainer</div>
+        <div class="num">$3,000</div>
+        <div class="sub">per month, ongoing</div>
+      </div>
+      <div class="metric">
+        <div class="mini-label">Setup fee</div>
+        <div class="num">$4,000</div>
+        <div class="sub">one-time for work completed to date</div>
+      </div>
+      <div class="metric">
+        <div class="mini-label">Weekly allocation</div>
+        <div class="num">25 hrs</div>
+        <div class="sub">per week across priorities</div>
+      </div>
+    </section>
+
+    <div class="row-2">
+      <section class="card">
+        <div class="section-eyebrow">What the setup fee covers</div>
+        <h2>Work completed to date</h2>
+        <ul>
+          <li>AI system architecture and OpenClaw environment setup</li>
+          <li>bot deployment, memory architecture, and backend coordination</li>
+          <li>server setup, access structure, and operational workflows</li>
+          <li>dashboard/backend support and technical direction to date</li>
+          <li>all foundational work already done across the stack up to this point</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <div class="section-eyebrow">What the monthly retainer covers</div>
+        <h2>Ongoing operating support</h2>
+        <ul>
+          <li>up to 25 hours per week of active support</li>
+          <li>technical direction and coordination with developers</li>
+          <li>bot, backend, dashboard, and systems oversight</li>
+          <li>workflow design, troubleshooting, and execution support</li>
+          <li>ongoing improvement and operational follow-through across priorities</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" style="margin-bottom:12px;">
+      <div class="section-eyebrow">Scope of services</div>
+      <h2>Primary scope</h2>
+      <div class="row-2" style="margin-bottom:0;">
+        <div>
+          <ul>
+            <li>OpenClaw / AI systems architecture and oversight</li>
+            <li>brand bot operations and structure across companies</li>
+            <li>backend and dashboard direction, review, and support</li>
+            <li>technical breakdowns, access setup, and infrastructure coordination</li>
+          </ul>
+        </div>
+        <div>
+          <ul>
+            <li>Revive SEO / AEO and related strategic execution</li>
+            <li>developer alignment and technical prioritization</li>
+            <li>cross-brand workflow support where needed</li>
+            <li>high-leverage operating support across Disruptive priorities</li>
+          </ul>
+        </div>
+      </div>
+      <div class="truth">
+        <p><strong>Working model:</strong> this is structured as a high-leverage operating and technical support role, not a one-off project scope.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-eyebrow">Commercial structure</div>
+      <h2>Terms at a glance</h2>
+      <p><strong>One-time setup fee:</strong> $4,000 for all work completed up to now.</p>
+      <p><strong>Ongoing retainer:</strong> $3,000/month for continued support, oversight, and execution.</p>
+      <p><strong>Capacity:</strong> up to 25 hours per week allocated across agreed Disruptive priorities.</p>
+      <p><strong>Outside scope:</strong> net-new large builds, major one-off projects, or materially expanded scope can be quoted separately if needed.</p>
+    </section>
+
+    <div class="footer">Disruptive engagement overview • prepared for Miguel Gutierrez</div>
+  </div>
+</body>
+</html>

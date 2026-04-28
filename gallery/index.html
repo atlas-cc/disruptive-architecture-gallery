@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture Briefs. Disruptive.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F1E8;--bg-alt:#EDE6D3;--ink:#0E1A14;--muted:#5A6B5F;
+  --pine:#2F6B4A;--pine-light:#4A8F6C;--pine-deep:#1F3024;--pine-darkest:#0F1F18;
+  --true-gold:#B8893A;--true-gold-light:#D9B26A;--rust:#B85C3A;
+  --line:rgba(14,26,20,.10);--line-soft:rgba(14,26,20,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;font-size:16px;line-height:1.5;font-feature-settings:"ss01","cv11";font-variant-numeric:tabular-nums}
+.wrap{max-width:1100px;margin:0 auto;padding:64px 32px 96px}
+.brandmark{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted);margin-bottom:48px}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--pine);vertical-align:middle;margin-top:-1px}
+h1{font-family:Fraunces,serif;font-weight:500;font-size:64px;line-height:1.05;letter-spacing:-1.6px;margin:0 0 16px}
+h1 em{font-style:italic;color:var(--pine)}
+.lede{font-size:18px;color:var(--muted);max-width:640px;margin:0 0 56px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted);margin:48px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--pine);transform:translateY(-2px)}
+.card_head{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted)}
+.card_title{font-family:Fraunces,serif;font-weight:500;font-size:28px;line-height:1.15;letter-spacing:-.5px;margin:0}
+.card_title em{font-style:italic;color:var(--pine)}
+.card_desc{font-size:15px;color:var(--ink);opacity:.82;line-height:1.55}
+.card_meta{display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.76px;text-transform:uppercase;color:var(--muted);margin-top:8px;padding-top:14px;border-top:1px solid var(--line-soft)}
+.card_meta .stat{font-family:Fraunces,serif;font-style:italic;font-size:22px;color:var(--pine);letter-spacing:-.3px;text-transform:none}
+.cta{display:inline-flex;align-items:center;gap:8px;font-family:Inter,sans-serif;font-weight:500;color:var(--pine)}
+.cta::after{content:"→"}
+.note{margin-top:64px;padding:24px;background:var(--bg-alt);border:1px solid var(--line);border-radius:14px;font-size:14px;color:var(--muted);line-height:1.6}
+.note strong{color:var(--ink);font-weight:600}
+hr{border:0;border-top:1px solid var(--line);margin:48px 0}
+.footer{margin-top:64px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.32px;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandmark"><span class="dot"></span> DISRUPTIVE · ARCHITECTURE GALLERY</div>
+
+  <h1>Pick the brief that <em>lands</em>.</h1>
+  <p class="lede">Four architecture artifacts, side by side. Open each, find the one that reads tightest. We'll restyle the winner to the new Disruptive design language and ship it to Miguel.</p>
+
+  <div class="section-label"><span class="dot"></span> Architecture briefs</div>
+  <div class="grid">
+
+    <a class="card" href="../architecture-final/">
+      <div class="card_head"><span>● FINAL · v2</span><span>16 APR</span></div>
+      <h2 class="card_title">Atlas OS / OpenClaw <em>architecture</em>.</h2>
+      <p class="card_desc">The final, canonical architecture brief. Atlas + the OpenClaw fleet. Written for Miguel.</p>
+      <div class="card_meta"><span class="stat">537 lines</span><span class="cta">Open</span></div>
+    </a>
+
+    <a class="card" href="../current-state/">
+      <div class="card_head"><span>● V1 · CURRENT STATE</span><span>16 APR</span></div>
+      <h2 class="card_title">Atlas OS, <em>current state</em>.</h2>
+      <p class="card_desc">Earlier draft. Snapshot of where everything was running pre-Hermes. Useful as a contrast read.</p>
+      <div class="card_meta"><span class="stat">533 lines</span><span class="cta">Open</span></div>
+    </a>
+
+    <a class="card" href="../engagement/">
+      <div class="card_head"><span>● ONE-PAGER</span><span>16 APR</span></div>
+      <h2 class="card_title">Disruptive engagement <em>overview</em>.</h2>
+      <p class="card_desc">Tighter scope. The engagement summary, one page. Companion to the architecture brief.</p>
+      <div class="card_meta"><span class="stat">188 lines</span><span class="cta">Open</span></div>
+    </a>
+
+    <a class="card" href="../ssm-cheatsheet/">
+      <div class="card_head"><span>● CHEATSHEET</span><span>16 APR</span></div>
+      <h2 class="card_title">Miguel AWS SSM <em>access</em>.</h2>
+      <p class="card_desc">Operational cheatsheet. Access patterns, SSM commands, runbook stubs. Reference, not a brief.</p>
+      <div class="card_meta"><span class="stat">214 lines</span><span class="cta">Open</span></div>
+    </a>
+
+  </div>
+
+  <div class="note"><strong>Workflow.</strong> Tell me which one reads best. I'll fork it into a new file, restyle to the Disruptive cream + pine + Fraunces system, dial the copy, and re-render to PDF for the Miguel send.</div>
+
+  <div class="footer">
+    <span><span class="dot"></span> ATLAS-CC · ARCHITECTURE-GALLERY</span>
+    <span>MADE BY KAEDEN</span>
+  </div>
+</div>
+</body>
+</html>

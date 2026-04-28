@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas OS / OpenClaw Architecture Brief</title>
+  <style>
+    :root {
+      --accent: #E63419;
+      --black: #191919;
+      --bg: #FFFFFF;
+      --card: #FFFFFF;
+      --border: #E6E0DA;
+      --text: #191919;
+      --muted: #5A5550;
+      --soft: #9A9590;
+      --soft-bg: #FAF7F4;
+      --radius: 20px;
+    }
+    @page { size: Letter; margin: 0.42in; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .page { max-width: 8.5in; margin: 0 auto; background: #fff; }
+    .sheet {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      page-break-after: always;
+    }
+    .sheet:last-child { page-break-after: auto; }
+    .hero {
+      background: var(--black);
+      color: white;
+      border-radius: 28px;
+      padding: 24px 24px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--accent);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .mark {
+      width: 82px;
+      height: 82px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-size: 25px;
+      letter-spacing: 0.15em;
+      font-weight: 700;
+    }
+    .eyebrow, .section-eyebrow, .pill, .mini-label {
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .eyebrow { color: rgba(255,255,255,0.58); font-size: 10px; margin-bottom: 6px; }
+    h1 {
+      margin: 0;
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-size: 31px;
+      line-height: 0.98;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .hero p { margin: 8px 0 0; max-width: 610px; color: rgba(255,255,255,0.78); }
+    .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 11px; }
+    .pill {
+      display: inline-block;
+      padding: 6px 10px 5px;
+      border-radius: 999px;
+      font-size: 9px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .pill.accent { background: rgba(230,52,25,0.14); color: #FFD8D1; border-color: rgba(230,52,25,0.3); }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 16px 14px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .accent-card {
+      background: #FEF2EF;
+      border: 1px solid rgba(230,52,25,0.22);
+    }
+    .accent-card h2 { color: var(--accent); }
+    .section-eyebrow { color: var(--soft); font-size: 9px; margin-bottom: 7px; }
+    h2 {
+      margin: 0 0 8px;
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    h3 {
+      margin: 0 0 7px;
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      line-height: 1.06;
+      text-transform: uppercase;
+    }
+    p { margin: 0 0 8px; color: var(--muted); }
+    p strong, li strong, td strong { color: var(--text); }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    li { margin: 0 0 5px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 10px; }
+    .metric {
+      background: var(--soft-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px 10px 9px;
+    }
+    .metric .mini-label { color: var(--soft); font-size: 8px; margin-bottom: 4px; }
+    .metric .num {
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      color: var(--accent);
+      font-size: 26px;
+      line-height: 1;
+    }
+    .metric .sub { color: var(--muted); font-size: 10px; margin-top: 4px; }
+    .arch-box {
+      background: var(--soft-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 13px;
+      margin-top: 10px;
+    }
+    .diagram {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: "Courier New", monospace;
+      font-size: 10.5px;
+      line-height: 1.36;
+      color: #433E39;
+    }
+    .truth {
+      border-left: 4px solid var(--accent);
+      background: #FEF2EF;
+      border-radius: 14px;
+      padding: 12px 12px 10px;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 11.5px;
+    }
+    thead th {
+      text-align: left;
+      padding: 9px 7px;
+      border-bottom: 1px solid var(--border);
+      color: var(--soft);
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    tbody td {
+      padding: 9px 7px;
+      border-bottom: 1px solid #EFEAE5;
+      vertical-align: top;
+      color: var(--muted);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    .footer { text-align: center; color: var(--soft); font-size: 10px; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <section class="sheet">
+      <section class="hero">
+        <div class="hero-grid">
+          <div class="mark">AOS</div>
+          <div>
+            <div class="eyebrow">OpenClaw / server architecture brief</div>
+            <h1>Atlas OS Architecture</h1>
+            <p>This document explains the server architecture, OpenClaw deployment model, background services, and ownership structure currently running inside the Disruptive environment.</p>
+            <div class="pill-row">
+              <span class="pill accent">OpenClaw architecture</span>
+              <span class="pill">Server topology</span>
+              <span class="pill">Background services</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-eyebrow">Architecture overview</div>
+        <h2>How the system is structured</h2>
+        <p>The environment is organized around one central backbone and multiple dedicated brand lanes. Atlas HQ is the central infrastructure node. The other servers are isolated operating lanes for specific brands or functions.</p>
+        <div class="metric-grid">
+          <div class="metric"><div class="mini-label">EC2 servers</div><div class="num">7</div><div class="sub">Live in AWS</div></div>
+          <div class="metric"><div class="mini-label">Backbone</div><div class="num">1</div><div class="sub">Atlas HQ</div></div>
+          <div class="metric"><div class="mini-label">Brand lanes</div><div class="num">6</div><div class="sub">Dedicated roles</div></div>
+          <div class="metric"><div class="mini-label">Runtime</div><div class="num">OC</div><div class="sub">OpenClaw layer</div></div>
+        </div>
+      </section>
+
+      <div class="row-2">
+        <section class="card">
+          <div class="section-eyebrow">What Atlas centralizes</div>
+          <h2>The backbone services</h2>
+          <ul>
+            <li>shared intelligence and coordination</li>
+            <li>central PostgreSQL 16 infrastructure</li>
+            <li>pgvector memory backbone used across the bots</li>
+            <li>shared standards across brand lanes</li>
+          </ul>
+        </section>
+
+        <section class="card accent-card">
+          <div class="section-eyebrow">Design principle</div>
+          <h2>Isolated lanes, shared backbone</h2>
+          <p>The architecture is not one giant bot on one giant box. It is a shared backbone with isolated brand lanes underneath it. That keeps control centralized while keeping brand execution separate.</p>
+        </section>
+      </div>
+
+      <div class="footer">Atlas OS architecture brief • page 1</div>
+    </section>
+
+    <section class="sheet">
+      <div class="row-2">
+        <section class="card">
+          <div class="section-eyebrow">Server topology</div>
+          <h2>Atlas and the operating lanes</h2>
+          <p><strong>Atlas HQ</strong> is the control-plane node. It runs central services and hosts the shared PostgreSQL + pgvector memory infrastructure used across the bots.</p>
+          <p><strong>The other servers</strong> are dedicated operating lanes for individual brands or business functions.</p>
+          <div class="arch-box">
+            <pre class="diagram">ATLAS OS
+   |
+   +--> ATLAS HQ
+   |      nginx
+   |      PostgreSQL 16
+   |      pgvector memory
+   |      OpenClaw gateway
+   |
+   +--> RAW Nutrition
+   +--> RAW Athletic Club
+   +--> Revive MD
+   +--> 3D Energy
+   +--> CBum
+   +--> Miguel EA</pre>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-eyebrow">Lane map</div>
+          <h2>What each server is for</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Lane</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Atlas HQ</strong></td><td>Shared backbone and memory infrastructure</td></tr>
+              <tr><td><strong>RAW Nutrition</strong></td><td>RAW brand operations</td></tr>
+              <tr><td><strong>RAW Athletic Club</strong></td><td>Tommy + dashboard stack</td></tr>
+              <tr><td><strong>Revive MD</strong></td><td>Revive brand runtime</td></tr>
+              <tr><td><strong>3D Energy</strong></td><td>3D brand runtime</td></tr>
+              <tr><td><strong>CBum</strong></td><td>CBum-specific operations</td></tr>
+              <tr><td><strong>Miguel EA</strong></td><td>Executive-assistant lane</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="section-eyebrow">Ownership model</div>
+        <h2>The environment lives in Miguel’s AWS account</h2>
+        <p>The infrastructure is hosted inside Miguel’s AWS environment. The stack was set up in a controlled production posture, with isolated lanes and restricted administrative access rather than a loose open-access server model.</p>
+      </section>
+
+      <div class="footer">Atlas OS architecture brief • page 2</div>
+    </section>
+
+    <section class="sheet">
+      <section class="card">
+        <div class="section-eyebrow">OpenClaw deployment model</div>
+        <h2>How OpenClaw runs across the stack</h2>
+        <p>OpenClaw is the runtime layer that gives each lane its agent behavior, memory handling, tools, and orchestration logic. It is the software layer sitting on top of the server infrastructure.</p>
+        <div class="row-2" style="margin-top: 6px;">
+          <div>
+            <ul>
+              <li>per-server agent runtime</li>
+              <li>per-brand workspaces</li>
+              <li>session and memory handling</li>
+            </ul>
+          </div>
+          <div>
+            <ul>
+              <li>tool execution and automation</li>
+              <li>message orchestration</li>
+              <li>operator behavior per lane</li>
+            </ul>
+          </div>
+        </div>
+        <div class="truth">
+          <p><strong>Memory model:</strong> Atlas hosts the shared PostgreSQL + pgvector memory backbone, and the bots connect into it remotely with isolated roles while also keeping local workspace context such as SOUL, MEMORY, and knowledge files.</p>
+        </div>
+        <div class="arch-box">
+          <pre class="diagram">CHANNEL / WEBHOOK / OPERATOR INPUT
+                 |
+                 v
+          OPENCLAW RUNTIME
+                 |
+        +--------+--------+
+        |                 |
+        v                 v
+     WORKSPACE       SHARED MEMORY
+  identity + rules   Postgres + pgvector
+        |                 |
+        +--------+--------+
+                 |
+                 v
+           ACTION / RESPONSE</pre>
+        </div>
+      </section>
+
+      <div class="row-3">
+        <section class="card">
+          <div class="section-eyebrow">Process model</div>
+          <h2>Primary runtime pattern</h2>
+          <p>Most brand servers run OpenClaw gateway and workspace infrastructure as the local agent runtime layer.</p>
+        </section>
+
+        <section class="card">
+          <div class="section-eyebrow">Background services</div>
+          <h2>What supports it</h2>
+          <p>Supporting services include nginx, PostgreSQL, pgvector semantic memory, brand workspaces, Dockerized app stacks where needed, and background orchestration layers.</p>
+        </section>
+
+        <section class="card accent-card">
+          <div class="section-eyebrow">Known exception</div>
+          <h2>RAW Athletic Club</h2>
+          <p>Tommy runs with a custom backend and dashboard stack, using OpenClaw as the reasoning layer rather than a standard Telegram gateway pattern.</p>
+        </section>
+      </div>
+
+      <div class="footer">Atlas OS architecture brief • page 3</div>
+    </section>
+
+    <section class="sheet">
+      <section class="card">
+        <div class="section-eyebrow">Operational use</div>
+        <h2>How Miguel uses Atlas OS</h2>
+        <p>Atlas OS is not meant to be used like a traditional server farm. The intended usage model is operational, not infrastructure-first. Miguel uses the system through the brand bots, workflows, approvals, and dashboards that sit on top of the server stack.</p>
+        <div class="row-2" style="margin-top: 6px;">
+          <div>
+            <h3>What it should do for Miguel</h3>
+            <ul>
+              <li>run brand-specific bots in isolated lanes</li>
+              <li>handle brand workflows and operational tasks</li>
+              <li>surface approvals, alerts, and follow-up actions</li>
+              <li>give visibility into what is running underneath</li>
+            </ul>
+          </div>
+          <div>
+            <h3>What it is not for</h3>
+            <ul>
+              <li>casual direct server usage every day</li>
+              <li>cross-brand access without boundaries</li>
+              <li>shared credentials floating across the stack</li>
+              <li>one monolithic bot handling everything</li>
+            </ul>
+          </div>
+        </div>
+        <div class="truth">
+          <p><strong>Best mental model:</strong> Miguel should use the system through the operating layer, while the server and OpenClaw architecture stays controlled underneath it.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-eyebrow">Admin access</div>
+        <h2>How to log in and find the fleet</h2>
+        <p>For infrastructure-level access, the entry point is Miguel’s AWS account in <strong>us-east-1</strong>. Once logged into AWS, the server fleet is visible under EC2. All 7 instances are online in Systems Manager.</p>
+        <div class="arch-box">
+          <pre class="diagram">AWS Console
+→ us-east-1
+→ EC2
+→ Instances
+→ Select server
+→ Use EC2 details for visibility
+→ Use Systems Manager for admin shell access when needed</pre>
+        </div>
+        <p><strong>Important:</strong> treat AWS console + Systems Manager as the standard admin access path. Direct SSH is not universal across the fleet and should be treated as exception-only.</p>
+      </section>
+
+      <div class="row-2">
+        <section class="card">
+          <div class="section-eyebrow">Security model</div>
+          <h2>How AWS security works here</h2>
+          <ul>
+            <li>the environment lives inside Miguel’s AWS account</li>
+            <li>each brand lane is isolated at the server level</li>
+            <li>IAM roles are scoped per server or lane</li>
+            <li>secrets are intended to come from AWS Secrets Manager</li>
+            <li>the stack is designed around controlled administrative access</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <div class="section-eyebrow">OpenClaw security</div>
+          <h2>How runtime security works</h2>
+          <ul>
+            <li>each bot has its own workspace context</li>
+            <li>memory is shared at the infrastructure layer but isolated by role</li>
+            <li>local SOUL, MEMORY, and knowledge files stay per bot</li>
+            <li>brand lanes are meant to avoid cross-brand leakage</li>
+            <li>OpenClaw is the runtime, not the owner of the infrastructure</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="card accent-card">
+        <div class="section-eyebrow">Emergency control</div>
+        <h2>Backup and kill switch</h2>
+        <p><strong>Server-level stop per lane after export backup</strong> is the cleanest emergency control model for the stack.</p>
+        <div class="truth">
+          <p><strong>Backup evidence:</strong> the bucket <strong>zero-client-miguel-225726002432</strong> exists, and migration artifacts are already present under <strong>migration-v2/</strong>.</p>
+        </div>
+      </section>
+
+      <div class="footer">Atlas OS architecture brief • page 4</div>
+    </section>
+
+    <section class="sheet">
+      <section class="card">
+        <div class="section-eyebrow">Bot map</div>
+        <h2>How each bot works within the companies</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Company / lane</th>
+              <th>Bot</th>
+              <th>Function</th>
+              <th>How it works</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Atlas HQ</strong></td><td><strong>Atlas</strong></td><td>Master intelligence</td><td>Cross-brand strategic synthesis at the HQ layer. Reads brand summaries and supports parent-level oversight.</td></tr>
+            <tr><td><strong>Atlas HQ</strong></td><td><strong>Arlo</strong></td><td>Strategic advisor</td><td>Miguel’s strategist bot for brand strategy, market analysis, and Disruptive-level decisions.</td></tr>
+            <tr><td><strong>RAW Nutrition</strong></td><td><strong>Charles</strong></td><td>Head of brand</td><td>RAW Nutrition brand voice, comms, and brand-strategy bot with its own workspace and semantic memory role.</td></tr>
+            <tr><td><strong>RAW Nutrition</strong></td><td><strong>Otto</strong></td><td>Operations bot</td><td>RAW Nutrition operations bot for Shopify, fulfillment, inventory, and order flow.</td></tr>
+            <tr><td><strong>RAW Nutrition</strong></td><td><strong>RAW Sales</strong></td><td>Sales bot</td><td>Planned sales/CRM bot for the RAW Nutrition lane once token setup is completed.</td></tr>
+            <tr><td><strong>RAW Athletic Club</strong></td><td><strong>RAW Gym Bot</strong></td><td>Front desk bot</td><td>Front-desk and member-communications bot for RAW Athletic Club, sharing the gym server lane.</td></tr>
+            <tr><td><strong>RAW Athletic Club</strong></td><td><strong>Tommy</strong></td><td>Main gym AI</td><td>Uses a custom backend + dashboard stack, with OpenClaw as the reasoning layer behind lead conversion, gym ops, and member workflows.</td></tr>
+            <tr><td><strong>Revive MD</strong></td><td><strong>Revive Ops Bot</strong></td><td>Brand operations</td><td>Dedicated Revive lane bot for Shopify, Amazon, Klaviyo, fulfillment, and brand operations.</td></tr>
+            <tr><td><strong>3D Energy</strong></td><td><strong>3D Energy Bot</strong></td><td>Brand operations</td><td>Dedicated 3D lane bot for store, ads, analytics, and Amazon activity within that brand.</td></tr>
+            <tr><td><strong>CBum</strong></td><td><strong>CBum Personal</strong></td><td>Personal brand bot</td><td>Separate runtime for Chris Bumstead personal voice, fan/community context, and personal-brand communication.</td></tr>
+            <tr><td><strong>CBum</strong></td><td><strong>CBum Standard</strong></td><td>Brand/app bot</td><td>Separate runtime for STNDRD, merch, brand education, and standard CBum brand operations.</td></tr>
+            <tr><td><strong>Miguel EA</strong></td><td><strong>Nora</strong></td><td>Executive assistant</td><td>Miguel’s personal executive assistant bot for calendar, decisions, and personal context, intentionally separated from brand data.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="footer">Atlas OS architecture brief • page 5</div>
+    </section>
+
+    <section class="sheet">
+      <section class="card">
+        <div class="section-eyebrow">Appendix A</div>
+        <h2>Fleet registry</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Lane</th>
+              <th>Instance ID</th>
+              <th>Public IP</th>
+              <th>Private IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Atlas HQ</strong></td><td><strong>i-002d7492322ae7f18</strong></td><td><strong>3.215.63.251</strong></td><td><strong>172.31.40.5</strong></td></tr>
+            <tr><td><strong>RAW Nutrition</strong></td><td><strong>i-0e47d8d79920afe66</strong></td><td><strong>98.81.114.254</strong></td><td><strong>172.31.13.242</strong></td></tr>
+            <tr><td><strong>RAW Athletic Club</strong></td><td><strong>i-086c2ab1b05cf40ff</strong></td><td><strong>34.235.207.137</strong></td><td><strong>172.31.90.59</strong></td></tr>
+            <tr><td><strong>Revive MD</strong></td><td><strong>i-0c73d4ae81a36dc1b</strong></td><td><strong>18.206.150.137</strong></td><td><strong>172.31.8.235</strong></td></tr>
+            <tr><td><strong>3D Energy</strong></td><td><strong>i-0b5987d00d4cde265</strong></td><td><strong>44.200.120.238</strong></td><td><strong>172.31.1.169</strong></td></tr>
+            <tr><td><strong>CBum</strong></td><td><strong>i-0d4b06294c7def006</strong></td><td><strong>100.54.136.12</strong></td><td><strong>172.31.1.206</strong></td></tr>
+            <tr><td><strong>Miguel EA</strong></td><td><strong>i-05b10dbe903fbad85</strong></td><td><strong>35.171.208.239</strong></td><td><strong>172.31.95.79</strong></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="section-eyebrow">Appendix B</div>
+        <h2>Operational posture</h2>
+        <ul>
+          <li>hosted inside Miguel’s AWS account</li>
+          <li>brand lanes intentionally separated</li>
+          <li>administrative access exists, but is intentionally restricted</li>
+          <li>designed to be stable and protected, not casually modified</li>
+        </ul>
+      </section>
+
+      <div class="footer">Atlas OS architecture brief • page 6</div>
+    </section>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Miguel AWS SSM Access Cheat Sheet</title>
+  <style>
+    :root {
+      --accent: #E63419;
+      --black: #191919;
+      --bg: #FFFFFF;
+      --card: #FFFFFF;
+      --border: #E6E0DA;
+      --text: #191919;
+      --muted: #5A5550;
+      --soft: #9A9590;
+      --soft-bg: #FAF7F4;
+      --radius: 20px;
+    }
+    @page { size: Letter; margin: 0.42in; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .page { max-width: 8.5in; margin: 0 auto; }
+    .hero {
+      background: var(--black);
+      color: white;
+      border-radius: 26px;
+      padding: 22px 22px 18px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--accent);
+    }
+    .eyebrow, .section-eyebrow {
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .eyebrow { color: rgba(255,255,255,0.58); font-size: 10px; margin-bottom: 6px; }
+    h1, h2 {
+      margin: 0;
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    h1 { font-size: 29px; line-height: 0.98; }
+    h2 { font-size: 21px; margin-bottom: 8px; }
+    .hero p { margin: 8px 0 0; color: rgba(255,255,255,0.8); max-width: 640px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 16px 14px;
+    }
+    .section-eyebrow { color: var(--soft); font-size: 9px; margin-bottom: 7px; }
+    p { margin: 0 0 8px; color: var(--muted); }
+    p strong, li strong, code strong { color: var(--text); }
+    ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    li { margin: 0 0 5px; }
+    .code {
+      background: var(--soft-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 13px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+      line-height: 1.4;
+      color: #2D2925;
+      margin-top: 10px;
+    }
+    .truth {
+      border-left: 4px solid var(--accent);
+      background: #FEF2EF;
+      border-radius: 14px;
+      padding: 12px 12px 10px;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 11.5px;
+    }
+    thead th {
+      text-align: left;
+      padding: 8px 7px;
+      border-bottom: 1px solid var(--border);
+      color: var(--soft);
+      font-family: "Arial Narrow", "Helvetica Neue Condensed Bold", "DejaVu Sans Condensed", Arial, sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    tbody td {
+      padding: 8px 7px;
+      border-bottom: 1px solid #EFEAE5;
+      vertical-align: top;
+      color: var(--muted);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    .footer { text-align: center; color: var(--soft); font-size: 10px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="eyebrow">Operator access cheat sheet</div>
+      <h1>Miguel AWS SSM Access</h1>
+      <p>This is the real Kaeden / ZERO path into Miguel’s AWS. Use the existing ZERO_DeployFish IAM access keys to assume role into Miguel’s account, then use SSM. This is the safe default. Not direct SSH.</p>
+    </section>
+
+    <div class="row-2">
+      <section class="card">
+        <div class="section-eyebrow">Base identity</div>
+        <h2>What you start from</h2>
+        <ul>
+          <li><strong>Source IAM identity:</strong> ZERO_DeployFish</li>
+          <li><strong>Source account:</strong> 237795118184</li>
+          <li><strong>Target account:</strong> 225726002432</li>
+          <li><strong>Target role:</strong> OrganizationAccountAccessRole</li>
+          <li><strong>Region:</strong> us-east-1</li>
+        </ul>
+        <div class="truth">
+          <p><strong>Reality:</strong> this is a CLI assume-role workflow using existing IAM access keys, not a console login on the ZERO_DeployFish user page.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-eyebrow">Safe default</div>
+        <h2>How to access properly</h2>
+        <ul>
+          <li>assume role into Miguel AWS</li>
+          <li>use SSM for shell access</li>
+          <li>treat direct SSH as exception-only</li>
+          <li>remember SSM commands can land as <strong>root</strong></li>
+          <li>fix ownership after edits inside ubuntu home paths</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card" style="margin-bottom:12px;">
+      <div class="section-eyebrow">Core workflow</div>
+      <h2>Assume role, then start session</h2>
+      <div class="code">aws sts assume-role \
+  --role-arn arn:aws:iam::225726002432:role/OrganizationAccountAccessRole \
+  --role-session-name zero-audit \
+  --region us-east-1
+
+# export the temporary credentials you get back
+export AWS_ACCESS_KEY_ID=...
+export AWS_SECRET_ACCESS_KEY=...
+export AWS_SESSION_TOKEN=...
+
+# then start SSM session
+aws ssm start-session --target i-002d7492322ae7f18 --region us-east-1</div>
+      <p style="margin-top:10px;"><strong>Safe rule:</strong> once the role is assumed, do all Miguel AWS work through that temporary role session.</p>
+    </section>
+
+    <div class="row-2">
+      <section class="card">
+        <div class="section-eyebrow">Quick targets</div>
+        <h2>Main instances</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Server</th>
+              <th>Instance ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Atlas HQ</strong></td><td><strong>i-002d7492322ae7f18</strong></td></tr>
+            <tr><td><strong>RAW Nutrition</strong></td><td><strong>i-0e47d8d79920afe66</strong></td></tr>
+            <tr><td><strong>RAW Athletic Club</strong></td><td><strong>i-086c2ab1b05cf40ff</strong></td></tr>
+            <tr><td><strong>Revive MD</strong></td><td><strong>i-0c73d4ae81a36dc1b</strong></td></tr>
+            <tr><td><strong>3D Energy</strong></td><td><strong>i-0b5987d00d4cde265</strong></td></tr>
+            <tr><td><strong>CBum</strong></td><td><strong>i-0d4b06294c7def006</strong></td></tr>
+            <tr><td><strong>Miguel EA</strong></td><td><strong>i-05b10dbe903fbad85</strong></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="section-eyebrow">Important notes</div>
+        <h2>Things to remember</h2>
+        <ul>
+          <li>all 7 instances were live and SSM-online in last verification</li>
+          <li>Atlas is usually the right place for shared OpenClaw / pgvector checks</li>
+          <li>RAW Athletic Club is where Tommy + RAW Dashboard live</li>
+          <li>SSM landing as root can create permission issues under <code>/home/ubuntu</code></li>
+          <li>fix ownership after changes when needed</li>
+        </ul>
+        <div class="code">chown -R ubuntu:ubuntu /home/ubuntu/.openclaw/</div>
+      </section>
+    </div>
+
+    <div class="footer">Miguel AWS SSM access cheat sheet • Kaeden / ZERO operator path</div>
+  </div>
+</body>
+</html>
